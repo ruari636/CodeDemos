@@ -17,7 +17,7 @@ class Pendulum {
 	Vec2 pegPos = { 0.0f, 0.0f };
 	Vec2 pegVel = { 0.0f, 0.0f };
 	float theta = 0.0f;
-	const float pegK = 1.0e6f;
+	float pegK = 1.0e3f;
 	const float length = 1.0f;
 	const float mass = 1.0f;
 	const float Ig = mass * length * length / 12.0f;

@@ -23,7 +23,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		Pendulum pendulum1 = Pendulum(1.0f, PI / 2.0f, 0.0f, nullptr);
-		Pendulum pendulum2 = Pendulum(1.0f, 0.0f, 0.0f, &pendulum1);
+		//Pendulum pendulum2 = Pendulum(1.0f, 0.0f, 0.0f, &pendulum1);
 		FrameTimer ft;
 		bool SteppingForward = false;
 		float dt = 0.0f;

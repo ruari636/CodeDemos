@@ -9,8 +9,13 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 	dt = ft.Mark();
-	pendulum2.Update(dt / 64.0f);
-	pendulum1.Update(dt / 64.0f);
+	//if (SteppingForward)
+	for (int i = 0; i < 10; i++)
+	{
+		//pendulum2.Update(dt / 16.0f);
+		pendulum1.Update(dt / 10.0f);
+		SteppingForward = false;
+	}
 	//pendulum.SetPegVelX(StateSpaceController::GetControlSignal(6.0f, pendulum.GetPosX(), pendulum.GetVelX(),
 	//	pendulum.getTheta(), pendulum.getThetaDot()));
 }
@@ -18,7 +23,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	pendulum1.Draw();
-	pendulum2.Draw();
+	//pendulum2.Draw();
 }
 
 //--------------------------------------------------------------

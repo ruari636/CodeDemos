@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\Downloads\TEMP_C++_TUTORIALS\advancedcpp\Engine\FrameTimer.cpp" />
+    <ClCompile Include="LagrangianPendulum.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\Pendulum.cpp" />
@@ -234,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\Downloads\TEMP_C++_TUTORIALS\advancedcpp\Engine\FrameTimer.h" />
+    <ClInclude Include="LagrangianPendulum.h" />
     <ClInclude Include="Pendulum.h" />
     <ClInclude Include="src\CoOrdTransformer.h" />
     <ClInclude Include="src\ofApp.h" />

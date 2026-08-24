@@ -14,6 +14,9 @@
     <ClCompile Include="src\StateSpaceController.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="LagrangianPendulum.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -35,6 +38,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="Pendulum.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="LagrangianPendulum.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

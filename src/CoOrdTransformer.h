@@ -15,4 +15,12 @@ public:
 		Vec2 t2 = GetTransformed(p2);
 		ofDrawLine(t1.x, t1.y, t2.x, t2.y);
 	}
+	static void DrawArrow(Vec2 p, Vec2 dir, float mag)
+	{
+		Vec2 start = GetTransformed(p);
+		Vec2 end = GetTransformed(p + dir * mag);
+		ofSetColor(( 0, 255, 0 ));
+		ofDrawArrow({ start.x, start.y, 1 }, { end.x, end.y, 1 }, 10.0f);
+		ofSetColor((255, 255, 255));
+	}
 };

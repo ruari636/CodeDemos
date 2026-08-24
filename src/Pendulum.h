@@ -17,7 +17,8 @@ class Pendulum {
 	Vec2 pegPos = { 0.0f, 0.0f };
 	Vec2 pegVel = { 0.0f, 0.0f };
 	float theta = 0.0f;
-	float pegK = 1.0e3f;
+	float pegK = 1000.0f;
+	float pegDamping = 1.0f;
 	const float length = 1.0f;
 	const float mass = 1.0f;
 	const float Ig = mass * length * length / 12.0f;
@@ -30,8 +31,10 @@ class Pendulum {
 	Vec2 pos = { 0.0f, 0.0f };
 	Vec2 vel = { 0.0f, 0.0f };
 	Vec2 acc = { 0.0f, 0.0f };
+	Vec2 posMinusPegPosPrev = { 0.0f, 0.0f };
 	std::map<std::string, Force> forces = {};
 	Pendulum * Prev = nullptr;
+	Force temp;
 
 public:
 	Pendulum(float mass = 1.0f, float theta = 0.0f, float thetaDot = 0.0f, Pendulum* Prev = nullptr);
@@ -58,4 +61,5 @@ public:
 	float getThetaDot() const {
 		return thetaDot;
 	}
+	Vec2 GetVelOfPoint(float distFromEnd);
 };

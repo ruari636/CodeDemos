@@ -1,5 +1,5 @@
 #include "Pendulum.h"
-#include "Pendulum.h"
+#include <cmath>
 #include "ofMain.h"
 #include "Vec2.h"
 #include "CoOrdTransformer.h"
@@ -13,6 +13,7 @@ Pendulum::Pendulum(float mass, float theta, float thetaDot, Pendulum * Prev)
 	sinTheta = sin(theta);
 	forces["Peg"] = {};
 	forces["Gravity"] = { 0.5f, { 0.0f, 1.0f }, 10.0f * mass };
+	forces["DampTangent"] = {};
 	if (Prev != nullptr)
 	{
 		pegPos = Prev->GetEndPos();
@@ -27,15 +28,21 @@ void Pendulum::Draw() const {
 	const float yBottom = length * cosTheta + yTop;
 
 	CoOrdTransformer::DrawLine(pos, { xBottom, yBottom });
+	CoOrdTransformer::DrawArrow(pos + (GetTangent() * temp.pos), temp.dir, temp.mag);
 }
 
 void Pendulum::Update(float dt) {
+	temp = forces["DampTangent"];
 	sinTheta = sin(theta);
 	cosTheta = cos(theta);
 	moment = 0.0f;
 	Vec2 forceSum = { 0.0f, 0.0f };
+	posMinusPegPosPrev = forces["Peg"].dir * forces["Peg"].mag / pegK;
+	Vec2 posMinusPegPos = pos - pegPos;
+	float velRelPeg = ((posMinusPegPos - posMinusPegPosPrev) * GetTangent()) / dt;
 	forces["Peg"].pos = 0.0f;
-	forces["Peg"].mag = pegK * (pos - pegPos).Len();
+	forces["Peg"].mag = pegK * (pos - pegPos).Len(); //std::max(pegK * (pos - pegPos).Len() - pegDamping * velRelPeg, 0.0f);
+
 	if (pegPos - pos != Vec2 { 0.0f, 0.0f }) {
 		forces["Peg"].dir = (pegPos - pos).GetNormalized();
 	}
@@ -45,7 +52,7 @@ void Pendulum::Update(float dt) {
 		moment += (0.5f - value.pos) * value.mag * (value.dir * GetNormal());
 	}
 	acc = forceSum / mass;
-	if (Prev != nullptr && forceSum != Vec2{0.0f, 0.0f}) {
+	if (Prev != nullptr) {
 		Prev->ApplyForce("NextPendulum", 1.0f, -forces["Peg"].dir, forces["Peg"].mag);
 	}
 	vel += acc * dt;
@@ -57,9 +64,8 @@ void Pendulum::Update(float dt) {
 	float thetaDoubleDot = moment / Ig;
 	thetaDot += thetaDoubleDot * dt;
 	theta += thetaDot * dt;
-
-	// add drag
-	//forces["Drag"] = { 0.01f * mass * thetaDot * thetaDot * thetaDot, GetNormal(), mass};
+	ApplyForce("DampTangent", 0.0f, GetTangent(), std::max(std::min(GetVelOfPoint(0.0f) * GetTangent() * mass * pegDamping, 5.0f), -5.0f));
+	std::cout << std::max(std::min(GetVelOfPoint(0.0f) * GetTangent() * mass * pegDamping, 5.0f), -5.0f) << '\n';
 }
 
 void Pendulum::SetPegVelX(float vIn) {
@@ -95,4 +101,8 @@ void Pendulum::MovePeg(float ax, float dt) {
 
 Vec2 Pendulum::GetEndPos() const {
 	return pegPos + GetTangent() * length;
+}
+
+Vec2 Pendulum::GetVelOfPoint(float distFromEnd) {
+	return vel - GetNormal() * thetaDot * distFromEnd;
 }

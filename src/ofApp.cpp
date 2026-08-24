@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "StateSpaceController.h"
+#include "CoOrdTransformer.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -10,11 +11,11 @@ void ofApp::setup(){
 void ofApp::update(){
 	dt = ft.Mark();
 	//if (SteppingForward)
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 32; i++)
 	{
-		//pendulum2.Update(dt / 16.0f);
-		pendulum1.Update(dt / 10.0f);
-		SteppingForward = false;
+		lagrangianpendulum.Update(dt / 64.0f);
+		pendulum1.Update(dt / 64.0f);
+		pendulum2.Update(dt / 64.0f);
 	}
 	//pendulum.SetPegVelX(StateSpaceController::GetControlSignal(6.0f, pendulum.GetPosX(), pendulum.GetVelX(),
 	//	pendulum.getTheta(), pendulum.getThetaDot()));
@@ -22,8 +23,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	lagrangianpendulum.Draw();
 	pendulum1.Draw();
-	//pendulum2.Draw();
+	pendulum2.Draw();
 }
 
 //--------------------------------------------------------------
@@ -31,13 +33,6 @@ void ofApp::keyPressed(int key){
 	if (key == 'f')
 	{
 		ofToggleFullscreen();
-	}
-	else if (key == 'a') {
-		pendulum1.MovePeg(-30.0f, dt);
-	}
-	else if (key == 'd') {
-		//pendulum1.MovePeg(30.0f, dt);
-		SteppingForward = true;
 	}
 }
 

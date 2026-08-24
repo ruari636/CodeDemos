@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "Pendulum.h"
 #include "FrameTimer.h"
+#include "LagrangianPendulum.h"
 
 class ofApp : public ofBaseApp{
 
@@ -22,8 +23,9 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		Pendulum pendulum1 = Pendulum(1.0f, PI / 2.0f, 0.0f, nullptr);
-		//Pendulum pendulum2 = Pendulum(1.0f, 0.0f, 0.0f, &pendulum1);
+		Pendulum pendulum1 = Pendulum(1.0f, PI / 8.0f, 0.0f, nullptr);
+		Pendulum pendulum2 = Pendulum(1.0f, 0.0f, 0.0f, &pendulum1);
+		LagrangianPendulum lagrangianpendulum = LagrangianPendulum { 1.0f, PI / 4.0f, 0.0f, 0.0f, 0.0f };
 		FrameTimer ft;
 		bool SteppingForward = false;
 		float dt = 0.0f;

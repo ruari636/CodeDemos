@@ -5,17 +5,23 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofSetWindowTitle("Cambridge Lab");
+	lagrangianpendulumBob.drawOffset = { 1.0f, -1.0f };
+	pendulumBob.drawOffset = { -1.0f, -1.0f };
+	pendulumBob2.drawOffset = { -1.0f, -1.0f };
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 	dt = ft.Mark();
 	//if (SteppingForward)
-	for (int i = 0; i < 32; i++)
 	{
-		lagrangianpendulum.Update(dt / 64.0f);
-		pendulum1.Update(dt / 64.0f);
-		pendulum2.Update(dt / 64.0f);
+		for (int i = 0; i < 16; i++) {
+			//lagrangianpendulum.Update(dt / 16.0f);
+			lagrangianpendulumBob.UpdateBob(dt / 16.0f);
+			pendulumBob.Update(dt / 16.0f);
+			pendulumBob2.Update(dt / 16.0f);
+		}
+		SteppingForward = false;
 	}
 	//pendulum.SetPegVelX(StateSpaceController::GetControlSignal(6.0f, pendulum.GetPosX(), pendulum.GetVelX(),
 	//	pendulum.getTheta(), pendulum.getThetaDot()));
@@ -23,9 +29,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	lagrangianpendulum.Draw();
-	pendulum1.Draw();
-	pendulum2.Draw();
+	lagrangianpendulumBob.Draw();
+	pendulumBob.Draw();
+	pendulumBob2.Draw();
 }
 
 //--------------------------------------------------------------
@@ -33,6 +39,10 @@ void ofApp::keyPressed(int key){
 	if (key == 'f')
 	{
 		ofToggleFullscreen();
+	}
+	if (key == 'd')
+	{
+		SteppingForward = true;
 	}
 }
 

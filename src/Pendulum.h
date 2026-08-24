@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "ofColor.h"
 
 class Pendulum {
 	struct Force {
@@ -17,7 +18,8 @@ class Pendulum {
 	Vec2 pegPos = { 0.0f, 0.0f };
 	Vec2 pegVel = { 0.0f, 0.0f };
 	float theta = 0.0f;
-	float pegK = 1000.0f;
+	float pegK = 1.0e3f;
+	float impulseStrength = 3.0e4f; // 100.0f too small
 	float pegDamping = 1.0f;
 	const float length = 1.0f;
 	const float mass = 1.0f;
@@ -27,7 +29,6 @@ class Pendulum {
 	float cosTheta = 1.0f;
 	float thetaDot = 0.0f;
 	float pegVelX = 0.0f;
-	float moment = 0.0f;
 	Vec2 pos = { 0.0f, 0.0f };
 	Vec2 vel = { 0.0f, 0.0f };
 	Vec2 acc = { 0.0f, 0.0f };
@@ -35,18 +36,19 @@ class Pendulum {
 	std::map<std::string, Force> forces = {};
 	Pendulum * Prev = nullptr;
 	Force temp;
+	static const int nReactionImpulseSteps = 8;
+	ofColor c = (255, 255, 255, 1.0f);
 
 public:
+	Vec2 DrawOffset = { 0.0f, 0.0f };
 	Pendulum(float mass = 1.0f, float theta = 0.0f, float thetaDot = 0.0f, Pendulum* Prev = nullptr);
 	void Draw() const;
 	void Update(float dt);
 	void SetPegVelX(float vIn);
 	Vec2 GetNormal() const;
 	Vec2 GetTangent() const;
-	void ApplyForceCOM(Vec2 dir, float mag);
 	void ApplyForce(std::string name, float posAlongRod, Vec2 dir, float mag);
-	void ApplyMoment(float M);
-	void SetMoment(float M);
+	void ApplyImpulse(float distFromEnd, Vec2 dir, float mag);
 	void MovePeg(float ax, float dt);
 	Vec2 GetEndPos() const;
 	float GetPosX() const{
@@ -62,4 +64,12 @@ public:
 		return thetaDot;
 	}
 	Vec2 GetVelOfPoint(float distFromEnd);
+	void SetImpulseStrength(float val)
+	{
+		impulseStrength = val;
+	}
+	float GetImpulseStrength() const
+	{
+		return impulseStrength;
+	}
 };

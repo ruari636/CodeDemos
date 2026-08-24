@@ -14,7 +14,10 @@
     <ClCompile Include="src\StateSpaceController.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="LagrangianPendulum.cpp">
+    <ClCompile Include="src\PendulumBob.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LagrangianPendulum.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,6 +44,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="LagrangianPendulum.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="PendulumBob.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -43,15 +43,21 @@ void ofApp::update(){
 					Constraint::RelaxConstraint(c);
 				}
 			}
-			for (int i = 1; i < rope.size(); i++)
+			for (int i = rope.size() - 1; i > 1; i--)
 			{
-				auto particle = *rope[i];
-				auto prevParticle = *rope[i - 1];
-				Vec2 delta = prevParticle.GetPos() - particle.GetPos();
-				//particle.SetForce("PrevParticle", delta.GetNormalized(), (delta.Len() - 0.1f) * 1000.0f);
+				auto& particle = *rope[i];
+ 				auto& nextParticle = *rope[i - 1];
+				Vec2 delta = particle.GetPos() - nextParticle.GetPos();
+				// delta pointing down initially
+				Vec2 normalised = delta.GetNormalized();
+				Force fPrev = particle.GetForce("PrevParticle");
+				Vec2 newForce = fPrev.Vector() + particle.GetForce("Gravity").Vector();
+				Force Next = { newForce.Len(), newForce.GetNormalized() };
+				nextParticle.SetForce("PrevParticle", normalised, Next.Vector() * normalised);
+				particle.SetForce("SpringK", -normalised, 1.0e4 * (delta.Len() - 0.1f));
 				particle.Update(dt);
 			}
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 16; i++) {
 				for (int i = 0; i < constraints.size(); i++) {
 					if (i == 0) {
 						Constraint::RelaxConstraint(constraints[i], true);
@@ -109,7 +115,10 @@ void ofApp::keyPressed(int key){
 	if (key == '2') {
 		demoNum = 2;
 		time = 0.0f;
+		constraints.clear();
+		constraintsSloMo.clear();
 		ropeSloMo.clear();
+		rope.clear();
 		Vec2 curPos = { -1.5f, 0.5f };
 		for (int i = 0; i < 10; i++)
 		{

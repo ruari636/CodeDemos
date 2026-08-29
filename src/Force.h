@@ -12,4 +12,7 @@ struct Force {
 	Force operator*(const float & rhs) {
 		return { mag * rhs, dir };
 	}
+	Vec2 Vector() const {
+		return dir * mag;
+	}
 };

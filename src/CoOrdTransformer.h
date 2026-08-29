@@ -11,6 +11,12 @@ public:
 		Vec2 offset = { width / 2.0f, height / 2.0f };
 		return offset + cIn * std::min(width, height) / (float)factor;
 	}
+	static Vec2 InverseTransform(Vec2 p) {
+		float width = (float)ofGetWidth();
+		float height = (float)ofGetHeight();
+		Vec2 offset = { width / 2.0f, height / 2.0f };
+		return (p - offset) * (float)factor / std::min(width, height);
+	}
 	static void DrawLine(Vec2 p1, Vec2 p2, ofColor c) {
 		ofSetColor(c);
 		Vec2 t1 = GetTransformed(p1);

@@ -38,9 +38,26 @@ void ofApp::update(){
 			if (time > 0.2f)
 			{
 				time -= 0.2f;
-				for (auto& c : constraints)
+				for (auto& c : constraintsSloMo)
 				{
 					Constraint::RelaxConstraint(c);
+				}
+			}
+			for (int i = 1; i < rope.size(); i++)
+			{
+				auto particle = *rope[i];
+				auto prevParticle = *rope[i - 1];
+				Vec2 delta = prevParticle.GetPos() - particle.GetPos();
+				//particle.SetForce("PrevParticle", delta.GetNormalized(), (delta.Len() - 0.1f) * 1000.0f);
+				particle.Update(dt);
+			}
+			for (int i = 0; i < 8; i++) {
+				for (int i = 0; i < constraints.size(); i++) {
+					if (i == 0) {
+						Constraint::RelaxConstraint(constraints[i], true);
+					} else {
+						Constraint::RelaxConstraint(constraints[i]);
+					}
 				}
 			}
 		}
@@ -70,6 +87,9 @@ void ofApp::draw(){
 		{
 			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), (255,255,255,255));
 		}
+		for (auto i = ropeSloMo.begin(); i != ropeSloMo.end() - 1; i++) {
+			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), (255, 255, 255, 255));
+		}
 	}
 }
 
@@ -89,34 +109,50 @@ void ofApp::keyPressed(int key){
 	if (key == '2') {
 		demoNum = 2;
 		time = 0.0f;
-		rope.clear();
+		ropeSloMo.clear();
 		Vec2 curPos = { -1.5f, 0.5f };
 		for (int i = 0; i < 10; i++)
 		{
-			curPos.x += 0.09f;
+			curPos.x += 0.1f;
 			std::unique_ptr<JakobsenParticle> p = std::make_unique<JakobsenParticle>(curPos, 1.0f);
-			rope.emplace_back(std::move(p));
+			ropeSloMo.emplace_back(std::move(p));
 		}
 		for (int i = 0; i < 10; i++)
 		{
-			curPos.y -= 0.09f;
+			curPos.y -= 0.1f;
 			std::unique_ptr<JakobsenParticle> p = std::make_unique<JakobsenParticle>(curPos, 1.0f);
-			rope.emplace_back(std::move(p));
+			ropeSloMo.emplace_back(std::move(p));
 		}
 		for (int i = 0; i < 10; i++) {
-			curPos.x += 0.09f;
+			curPos.x += 0.1f;
 			std::unique_ptr<JakobsenParticle> p = std::make_unique<JakobsenParticle>(curPos, 1.0f);
-			rope.emplace_back(std::move(p));
+			ropeSloMo.emplace_back(std::move(p));
 		}
 		for (int i = 0; i < 10; i++) {
-			curPos.y += 0.09f;
+			curPos.y += 0.1f;
 			std::unique_ptr<JakobsenParticle> p = std::make_unique<JakobsenParticle>(curPos, 1.0f);
-			rope.emplace_back(std::move(p));
+			ropeSloMo.emplace_back(std::move(p));
 		}
 		for (int i = 0; i < 10; i++) {
-			curPos.x += 0.09f;
+			curPos.x += 0.1f;
+			std::unique_ptr<JakobsenParticle> p = std::make_unique<JakobsenParticle>(curPos, 1.0f);
+			ropeSloMo.emplace_back(std::move(p));
+		}
+		for (int i = 0; i < ropeSloMo.size() - 1; i++)
+		{
+			constraintsSloMo.push_back({ *ropeSloMo[i], *ropeSloMo[i + 1], 0.05f });
+		}
+		curPos = { 1.0f, -1.0f };
+		for (int i = 0; i < 20; i++) {
 			std::unique_ptr<JakobsenParticle> p = std::make_unique<JakobsenParticle>(curPos, 1.0f);
 			rope.emplace_back(std::move(p));
+			if (i != 0) {
+				rope[i]->SetForce("Gravity", { 0.0f, 1.0f }, 10.0f);
+			}
+			curPos.y += 0.1f;
+		}
+		for (int i = 0; i < rope.size() - 1; i++) {
+			constraints.push_back({ *rope[i], *rope[i + 1], 0.1f });
 		}
 	}
 }
@@ -127,18 +163,18 @@ void ofApp::keyReleased(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
+void ofApp::mouseMoved(int x, int y) {
+	if (demoNum == 2) {
+		rope[0]->MoveBy(CoOrdTransformer::InverseTransform(Vec2 { (float)x, (float)y }) - rope[0]->GetPos());
+	}
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
+void ofApp::mouseDragged(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
 }
 
 //--------------------------------------------------------------

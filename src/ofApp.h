@@ -41,6 +41,8 @@ class ofApp : public ofBaseApp{
 		float dt = 0.0f;
 		ofTrueTypeFont font;
 
+		std::vector<std::unique_ptr<JakobsenParticle>> ropeSloMo;
+		std::vector<Constraint> constraintsSloMo;
 		std::vector<std::unique_ptr<JakobsenParticle>> rope;
 		std::vector<Constraint> constraints;
 		float time = 0.0f;

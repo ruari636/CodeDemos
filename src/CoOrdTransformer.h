@@ -4,7 +4,7 @@
 
 class CoOrdTransformer {
 public:
-	static const int factor = 3;
+	static const int factor = 6;
 	static Vec2 GetTransformed(Vec2 cIn) {
 		float width = (float)ofGetWidth();
 		float height = (float)ofGetHeight();
@@ -27,5 +27,9 @@ public:
 	static void DrawCircle(Vec2 p, float radius, ofColor c) {
 		ofSetColor(c);
 		ofDrawCircle({ GetTransformed(p).x, GetTransformed(p).y }, radius * std::min(ofGetWidth() / (float)factor, ofGetHeight() / (float)factor));
+	}
+	static void DrawString(ofTrueTypeFont& font, std::string text, Vec2 pos, ofColor c) {
+		ofSetColor(c);
+		font.drawString(text, GetTransformed(pos).x, GetTransformed(pos).y);
 	}
 };

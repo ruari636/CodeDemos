@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\..\Downloads\TEMP_C++_TUTORIALS\advancedcpp\Engine\FrameTimer.cpp" />
+    <ClCompile Include="src\JakobsenParticle.cpp" />
     <ClCompile Include="src\LagrangianPendulum.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
@@ -237,10 +238,13 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\..\Downloads\TEMP_C++_TUTORIALS\advancedcpp\Engine\FrameTimer.h" />
     <ClInclude Include="LagrangianPendulum.h" />
-    <ClInclude Include="Pendulum.h" />
-    <ClInclude Include="PendulumBob.h" />
+    <ClInclude Include="src\Constraint.h" />
     <ClInclude Include="src\CoOrdTransformer.h" />
+    <ClInclude Include="src\Force.h" />
+    <ClInclude Include="src\JakobsenParticle.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\Pendulum.h" />
+    <ClInclude Include="src\PendulumBob.h" />
     <ClInclude Include="src\StateSpaceController.h" />
     <ClInclude Include="src\Vec2.h" />
   </ItemGroup>

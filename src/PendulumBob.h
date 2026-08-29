@@ -3,21 +3,14 @@
 #include <string>
 #include <map>
 #include "ofColor.h"
+#include "Force.h"
 
 class PendulumBob {
-	struct Force {
-		float mag;
-		Vec2 dir;
-		Force operator*(const float& rhs)
-		{
-			return { mag * rhs, dir };
-		}
-	};
 	float m = 1.0f;
 	float l = 1.0f;
 	Vec2 pegPos = { 0.0f, 0.0f };
 	Vec2 massPos;
-	std::map<std::string, Force> forces = {};
+	std::map<std::string, Force> forces;
 	PendulumBob * next = nullptr;
 	PendulumBob * prev = nullptr;
 	Vec2 massVel = { 0.0f, 0.0f };

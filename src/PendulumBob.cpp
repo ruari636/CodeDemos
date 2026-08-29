@@ -29,7 +29,8 @@ void PendulumBob::Update(float dt) {
 		next->ApplyForce("NextString", forces["StringExtension"] * -1.0f);
 	}
 	Vec2 forceSum = {0.0f, 0.0f};
-	forces["StringExtension"] = (massPos - pegPos).Len() > l ? Force { ((massPos - pegPos).Len() - l) * kString, -GetTangent() } : Force { 0, GetTangent() };
+	forces["StringExtension"] = (massPos - pegPos).Len() > l ?
+		Force { ((massPos - pegPos).Len() - l) * kString, -GetTangent() } : Force { 0, GetTangent() };
 	for (const auto & [key, value] : forces) {
 		forceSum += value.dir * value.mag;
 	}

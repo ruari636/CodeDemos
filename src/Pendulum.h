@@ -18,7 +18,7 @@ class Pendulum {
 	Vec2 pegPos = { 0.0f, 0.0f };
 	Vec2 pegVel = { 0.0f, 0.0f };
 	float theta = 0.0f;
-	float pegK = 1.0e3f;
+	float pegK = 1.0e6f;
 	float impulseStrength = 3.0e4f; // 100.0f too small
 	float pegDamping = 1.0f;
 	const float length = 1.0f;
@@ -40,7 +40,7 @@ class Pendulum {
 	ofColor c = (255, 255, 255, 1.0f);
 
 public:
-	Vec2 DrawOffset = { 0.0f, 0.0f };
+	Vec2 drawOffset = { 0.0f, 0.0f };
 	Pendulum(float mass = 1.0f, float theta = 0.0f, float thetaDot = 0.0f, Pendulum* Prev = nullptr);
 	void Draw() const;
 	void Update(float dt);

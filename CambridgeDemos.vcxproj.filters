@@ -25,6 +25,9 @@
     <ClCompile Include="..\..\..\..\..\..\..\Downloads\TEMP_C++_TUTORIALS\advancedcpp\Engine\FrameTimer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Cloth.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -63,6 +66,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Force.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Cloth.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

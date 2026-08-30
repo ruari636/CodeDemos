@@ -9,6 +9,7 @@
 #include "JakobsenParticle.h"
 #include <memory>
 #include "Constraint.h"
+#include "Cloth.h"
 
 class ofApp : public ofBaseApp{
 
@@ -45,5 +46,9 @@ class ofApp : public ofBaseApp{
 		std::vector<Constraint> constraintsSloMo;
 		std::vector<std::unique_ptr<JakobsenParticle>> rope;
 		std::vector<Constraint> constraints;
+
+		Cloth cloth1 = Cloth(10, 10, {0.0f, 0.0f});
+
 		float time = 0.0f;
+		float timeCloth = time;
 };

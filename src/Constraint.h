@@ -21,7 +21,6 @@ struct Constraint {
 		{
 			p2.MoveBy(thisMovement * 2);
 		} else {
-
 			p1.MoveBy(-thisMovement);
 			p2.MoveBy(thisMovement);
 		}

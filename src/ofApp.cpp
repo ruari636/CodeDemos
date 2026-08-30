@@ -20,6 +20,7 @@ void ofApp::setup(){
 void ofApp::update(){
 	dt = ft.Mark();
 	time += dt;
+	timeCloth += dt;
 	//if (SteppingForward)
 	{
 		if (demoNum == 1) {
@@ -35,15 +36,18 @@ void ofApp::update(){
 		}
 		if (demoNum == 2)
 		{
-			if (time > 0.2f)
+			cloth1.SetTopLeftPos(Vec2{ 3.0f * sin(timeCloth), 0.0f });
+			cloth1.SetTopRightPos(Vec2 { 4.0f * sin(timeCloth + 0.5f), 0.0f });
+			cloth1.Update(dt, 8);
+			if (time > 0.5f)
 			{
-				time -= 0.2f;
+				time -= 0.5f;
 				for (auto& c : constraintsSloMo)
 				{
 					Constraint::RelaxConstraint(c);
 				}
 			}
-			for (int i = rope.size() - 1; i > 1; i--)
+			for (int i = (int)rope.size() - 1; i > 1; i--)
 			{
 				auto& particle = *rope[i];
  				auto& nextParticle = *rope[i - 1];
@@ -96,6 +100,7 @@ void ofApp::draw(){
 		for (auto i = ropeSloMo.begin(); i != ropeSloMo.end() - 1; i++) {
 			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), (255, 255, 255, 255));
 		}
+		cloth1.Draw((255,255,255));
 	}
 }
 
@@ -119,7 +124,7 @@ void ofApp::keyPressed(int key){
 		constraintsSloMo.clear();
 		ropeSloMo.clear();
 		rope.clear();
-		Vec2 curPos = { -1.5f, 0.5f };
+		Vec2 curPos = { -2.5f, 0.5f };
 		for (int i = 0; i < 10; i++)
 		{
 			curPos.x += 0.1f;

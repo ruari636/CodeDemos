@@ -72,39 +72,39 @@ void Cloth::Update(float dt, int nPasses, bool gravity, bool strictConstraints) 
 			int curPos = y * nCols + x;
 			auto & particle = *cloth[curPos];
 			particle.Update(dt);
-			auto fV = particle.GetForce("Gravity").Vector();
-			fV += particle.GetForce("BelowParticle").Vector();
-			fV += particle.GetForce("AboveParticle").Vector();
-			fV += particle.GetForce("LeftParticle").Vector() + particle.GetForce("RightParticle").Vector();
-			if (y == 0 && x == 0)
-			{
-				std::cout << "Vertical force on particle: " << fV.Len() * (fV.GetNormalized() * Vec2 { 0.0f, 1.0f }) << '\n';
-			}	
+			//auto fV = particle.GetForce("Gravity").Vector();
+			//fV += particle.GetForce("BelowParticle").Vector();
+			//fV += particle.GetForce("AboveParticle").Vector();
+			//fV += particle.GetForce("LeftParticle").Vector() + particle.GetForce("RightParticle").Vector();
+			//if (y == 0 && x == 0)
+			//{
+			//	std::cout << "Vertical force on particle: " << fV.Len() * (fV.GetNormalized() * Vec2 { 0.0f, 1.0f }) << '\n';
+			//}	
 		}
 	}
 	if (strictConstraints) {
 		for (int i = 0; i < nPasses; i++) {
 			for (auto & c : constraintsCloth) {
-				//Constraint::RelaxConstraint(c);
+				Constraint::RelaxConstraint(c);
 			}
 		}
 	}
 }
 
-Cloth::Cloth(int nCols, int nRows, Vec2 startPos)
+Cloth::Cloth(int nCols, int nRows, Vec2 TL, Vec2 TR)
 	:
 	nCols(nCols),
-	nRows(nRows),
-	topLeftPosition(startPos)
-	, topRightPosition(startPos + Vec2{0.1f * (nCols - 1), 0.0f}) {
-	float tempX = startPos.x;
+	nRows(nRows), topLeftPosition(TL)
+	, topRightPosition(TR)
+{
+	float tempX = TL.x;
 	for (int y = 0; y < nRows; y++) {
 		for (int x = 0; x < nCols; x++) {
-			cloth.emplace_back(std::make_unique<JakobsenParticle>(startPos, 1.0f));
-			startPos.x += 0.1f;
+			cloth.emplace_back(std::make_unique<JakobsenParticle>(TL, 1.0f));
+			TL.x += 0.1f;
 		}
-		startPos.x = tempX;
-		startPos.y += 0.1f;
+		TL.x = tempX;
+		TL.y += 0.1f;
 	}
 	for (int y = 0; y < nRows; y++) {
 		for (int x = 0; x < nCols; x++) {
@@ -127,7 +127,7 @@ Cloth::Cloth(int nCols, int nRows, Vec2 startPos)
 			}
 		}
 	}
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 32; i++) {
 		for (auto & c : constraintsCloth) {
 			Constraint::RelaxConstraint(c);
 		}

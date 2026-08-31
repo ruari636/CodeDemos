@@ -35,15 +35,17 @@ void ofApp::update(){
 		}
 		if (demoNum == 2) {
 			timeCloth += dt;
-			cloth1->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -3.5f + cos(timeCloth + 0.5f) });
-			cloth1->SetTopRightPos(Vec2 { sin(timeCloth), -2.5f + cos(timeCloth) });
-			cloth2->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -1.0f + cos(timeCloth + 0.5f) });
-			cloth2->SetTopRightPos(Vec2 { sin(timeCloth), cos(timeCloth) });
+			cloth1->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -2.0f + cos(timeCloth) });
+			cloth1->SetTopRightPos(Vec2 { 1.0f + sin(timeCloth), -2.0f + cos(timeCloth) });
+			cloth2->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -1.0f + cos(timeCloth) });
+			cloth2->SetTopRightPos(Vec2 { 1.0f + sin(timeCloth), -1.0f + cos(timeCloth) });
 			{
 				// cloth 1 is using constraints
-				cloth1->Update(dt, 16, true, true);
-				// cloth 2 is entirely physics based
-				cloth2->Update(dt, 0, true, false);
+					cloth1->Update(dt, 16, true, true);
+				for (int i = 0; i < 4; i++) {
+					// cloth 2 is entirely physics based
+					cloth2->Update(dt/4.0f, 0, true, false);
+				}
 				SteppingForward = false;
 			}
 			if (time > 0.5f && transitionNum < 255.0f)
@@ -123,9 +125,6 @@ void ofApp::keyPressed(int key){
 	{
 		SteppingForward = true;
 	}
-	if (key == 'a') {
-		cloth1->SetTopLeftPos(cloth1->GetTopLeftPos() - Vec2{ dt * 0.01f, 0.0f });
-	}
 	if (key == '1') {
 		demoNum = 1;
 	}
@@ -139,8 +138,10 @@ void ofApp::keyPressed(int key){
 		ropeSloMo.clear();
 		rope.clear();
 		delete cloth1;
-		cloth1 = new Cloth(10, 10, { 0.0f, 0.0f });
-		Vec2 curPos = { -3.5f, 0.5f };
+		delete cloth2;
+		cloth1 = new Cloth(10, 10, { 0.0f, -2.0f + cos(timeCloth + 0.5f) }, Vec2 { sin(timeCloth), -2.0f + cos(timeCloth) + cos(0.5f) });
+		cloth2 = new Cloth(10, 10, { 0.0f, cos(timeCloth + 0.5f) }, Vec2 { sin(timeCloth), -1.0f + cos(timeCloth) + cos(0.5f) });
+		Vec2 curPos = { -5.0f, 0.5f };
 		for (int i = 0; i < 10; i++)
 		{
 			curPos.x += 0.1f;

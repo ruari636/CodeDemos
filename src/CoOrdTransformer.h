@@ -4,7 +4,7 @@
 
 class CoOrdTransformer {
 public:
-	static const int factor = 6;
+	static const int factor = 8;
 	static Vec2 GetTransformed(Vec2 cIn) {
 		float width = (float)ofGetWidth();
 		float height = (float)ofGetHeight();

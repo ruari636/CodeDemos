@@ -40,7 +40,9 @@ void ofApp::update(){
 			cloth2->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -1.0f + cos(timeCloth + 0.5f) });
 			cloth2->SetTopRightPos(Vec2 { sin(timeCloth), cos(timeCloth) });
 			{
+				// cloth 1 is using constraints
 				cloth1->Update(dt, 16, true, true);
+				// cloth 2 is entirely physics based
 				cloth2->Update(dt, 0, true, false);
 				SteppingForward = false;
 			}

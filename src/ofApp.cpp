@@ -20,7 +20,6 @@ void ofApp::setup(){
 void ofApp::update(){
 	dt = ft.Mark();
 	time += dt;
-	timeCloth += dt;
 	//if (SteppingForward)
 	{
 		if (demoNum == 1) {
@@ -34,14 +33,21 @@ void ofApp::update(){
 				pendulum3.Update(dt / 16.0f);
 			}
 		}
-		if (demoNum == 2)
-		{
-			cloth1.SetTopLeftPos(Vec2{ 3.0f * sin(timeCloth), 0.0f });
-			cloth1.SetTopRightPos(Vec2 { 4.0f * sin(timeCloth + 0.5f), 0.0f });
-			cloth1.Update(dt, 8);
-			if (time > 0.5f)
+		if (demoNum == 2) {
+			timeCloth += dt;
+			cloth1->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -3.5f + cos(timeCloth + 0.5f) });
+			cloth1->SetTopRightPos(Vec2 { sin(timeCloth), -2.5f + cos(timeCloth) });
+			cloth2->SetTopLeftPos(Vec2 { 1.5f * sin(timeCloth), -1.0f + cos(timeCloth + 0.5f) });
+			cloth2->SetTopRightPos(Vec2 { sin(timeCloth), cos(timeCloth) });
+			{
+				cloth1->Update(dt, 16, true, true);
+				cloth2->Update(dt, 0, true, false);
+				SteppingForward = false;
+			}
+			if (time > 0.5f && transitionNum < 255.0f)
 			{
 				time -= 0.5f;
+				transitionNum += 255.0f / 16;
 				for (auto& c : constraintsSloMo)
 				{
 					Constraint::RelaxConstraint(c);
@@ -95,12 +101,13 @@ void ofApp::draw(){
 	{
 		for (auto i = rope.begin(); i != rope.end() - 1; i++)
 		{
-			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), (255,255,255,255));
+			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), (255,255,255));
 		}
 		for (auto i = ropeSloMo.begin(); i != ropeSloMo.end() - 1; i++) {
-			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), (255, 255, 255, 255));
+			CoOrdTransformer::DrawLine(i->get()->GetPos(), (i + 1)->get()->GetPos(), ofColor(255.0f - transitionNum,transitionNum, 0.0f));
 		}
-		cloth1.Draw((255,255,255));
+		cloth1->Draw(ofColor(0, 0,127));
+		cloth2->Draw(ofColor(127, 0, 0));
 	}
 }
 
@@ -114,17 +121,24 @@ void ofApp::keyPressed(int key){
 	{
 		SteppingForward = true;
 	}
+	if (key == 'a') {
+		cloth1->SetTopLeftPos(cloth1->GetTopLeftPos() - Vec2{ dt * 0.01f, 0.0f });
+	}
 	if (key == '1') {
 		demoNum = 1;
 	}
 	if (key == '2') {
 		demoNum = 2;
 		time = 0.0f;
+		timeCloth = 0.0f;
+		transitionNum = 0.0f;
 		constraints.clear();
 		constraintsSloMo.clear();
 		ropeSloMo.clear();
 		rope.clear();
-		Vec2 curPos = { -2.5f, 0.5f };
+		delete cloth1;
+		cloth1 = new Cloth(10, 10, { 0.0f, 0.0f });
+		Vec2 curPos = { -3.5f, 0.5f };
 		for (int i = 0; i < 10; i++)
 		{
 			curPos.x += 0.1f;

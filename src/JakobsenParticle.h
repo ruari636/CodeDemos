@@ -16,6 +16,7 @@ public:
 	Vec2 GetPos() const;
 	void MoveBy(Vec2 delta);
 	void SetForce(std::string name, Vec2 forceDir, float magnitude);
+	void SetForce(std::string name, Force f);
 	void Update(float dt);
-	Force GetForce(std::string name);
+	Force GetForce(std::string name) const;
 };

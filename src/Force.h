@@ -15,4 +15,9 @@ struct Force {
 	Vec2 Vector() const {
 		return dir * mag;
 	}
+	Force operator+(const Force& rhs)
+	{
+		Vec2 total = this->Vector() + rhs.Vector();
+		return Force(total.Len(), total.GetNormalized());
+	}
 };

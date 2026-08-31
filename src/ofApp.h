@@ -47,8 +47,10 @@ class ofApp : public ofBaseApp{
 		std::vector<std::unique_ptr<JakobsenParticle>> rope;
 		std::vector<Constraint> constraints;
 
-		Cloth cloth1 = Cloth(10, 10, {0.0f, 0.0f});
+		Cloth * cloth1 = new Cloth(10, 10, { 0.0f, 0.0f });
+		Cloth * cloth2 = new Cloth(10, 10, { 0.0f, 3.0f });
 
 		float time = 0.0f;
 		float timeCloth = time;
+		float transitionNum = 0.0f;
 };
